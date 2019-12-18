@@ -13,6 +13,10 @@ const char* CSI = "\x1b[";
 const char* TITLE = "\x1b[5;20H";
 const char* INDENT = "\x1b[5C";
 const char* YELLOW = "\x1b[93m";
+const char* RED = "\x1b[91m";
+const char* BLUE = "\x1b[94m";
+const char* WHITE = "\x1b[97m";
+const char* GREEN = "\x1b[92m";
 const char* MAGENTA = "\x1b[95m";
 const char* RESET_COLOR = "\x1b[0m";
 const char* SAVE_CURSOR_POS = "\x1b[s";
@@ -49,7 +53,15 @@ int main()
 	{
 		for (int x = 0; x < MAZE_WIDTH; x++)
 		{
-			rooms[y][x] = rand() % MAX_RANDOM_TYPE;
+			int type = rand() % (MAX_RANDOM_TYPE * 2);
+			if (type < MAX_RANDOM_TYPE)
+			{
+				rooms[y][x] = type;
+			}
+			else
+			{
+				rooms[y][x] = EMPTY;
+			}
 		}
 	}
 
@@ -71,7 +83,27 @@ int main()
 		std::cout << INDENT;
 		for (int x = 0; x < MAZE_WIDTH; x++)
 		{
-			std::cout << "[ " << rooms[y][x] << " ] ";
+			switch (rooms[y][x])
+			{
+			case EMPTY: 
+				std::cout << "[ " << GREEN << "\xb0" << RESET_COLOR << " ] "; 
+				break;
+			case ENEMY:
+				std::cout << "[ " << RED << "\x94" << RESET_COLOR << " ] "; 
+				break;
+			case TREASURE: 
+				std::cout << "[ " << YELLOW << "$" << RESET_COLOR << " ] "; 
+				break;
+			case FOOD: 
+				std::cout << "[ " << WHITE << "\xcf" << RESET_COLOR << " ] "; 
+				break;
+			case ENTRANCE: 
+				std::cout << "[ " << WHITE << "\x9d" << RESET_COLOR << " ] "; 
+				break;
+			case EXIT: 
+				std::cout << "[ " << WHITE << "\xFE" << RESET_COLOR << " ] "; 
+				break;
+			}
 		}
 		std::cout << std::endl;
 	}
